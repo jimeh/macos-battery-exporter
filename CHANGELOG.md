@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.3...v0.0.4) (2023-12-16)
+
+
+### Continuous Integration
+
+* **lint:** setup golangci-lint ([2ac3ecb](https://github.com/jimeh/macos-battery-exporter/commit/2ac3ecb555e0f6eea369516328f1f03da7d61251))
+
 ## [0.0.3](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.2...v0.0.3) (2023-12-16)
 
 
