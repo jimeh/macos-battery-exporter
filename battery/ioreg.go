@@ -3,6 +3,7 @@
 package battery
 
 import (
+	"bytes"
 	"os/exec"
 
 	"howett.net/plist"
@@ -39,6 +40,11 @@ func getAllRaw() ([]*batteryRaw, error) {
 	}
 
 	batteries := []*batteryRaw{}
+
+	if len(bytes.TrimSpace(b)) == 0 {
+		return batteries, nil
+	}
+
 	_, err = plist.Unmarshal(b, &batteries)
 	if err != nil {
 		return nil, err

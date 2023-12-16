@@ -17,7 +17,9 @@ const (
 )
 
 type Collector struct {
-	descInfo                       *prometheus.Desc
+	descInfo         *prometheus.Desc
+	descBatteryCount *prometheus.Desc
+
 	descBatteryCellDisconnectCount *prometheus.Desc
 	descChargeRateAmps             *prometheus.Desc
 	descChargeRateWatts            *prometheus.Desc
@@ -45,6 +47,14 @@ func NewCollector(namespace string) *Collector {
 			prometheus.BuildFQName(namespace, "battery", "info"),
 			"Basic details about the battery.",
 			[]string{serialLabel, deviceNameLabel, builtInLabel},
+			nil,
+		),
+		descBatteryCount: prometheus.NewDesc(
+			prometheus.BuildFQName(
+				namespace, "battery", "count",
+			),
+			"Total number of batteries.",
+			nil,
 			nil,
 		),
 		descBatteryCellDisconnectCount: prometheus.NewDesc(
@@ -191,6 +201,7 @@ func NewCollector(namespace string) *Collector {
 
 func (c *Collector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.descInfo
+	ch <- c.descBatteryCount
 	ch <- c.descBatteryCellDisconnectCount
 	ch <- c.descChargeRateAmps
 	ch <- c.descChargeRateWatts
@@ -219,6 +230,12 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		)
 		return
 	}
+
+	ch <- prometheus.MustNewConstMetric(
+		c.descBatteryCount,
+		prometheus.GaugeValue,
+		float64(len(batteries)),
+	)
 
 	for _, battery := range batteries {
 		labels := []string{battery.Serial}
