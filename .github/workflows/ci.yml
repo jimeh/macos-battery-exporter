@@ -1,0 +1,47 @@
+---
+name: CI
+on: [push]
+
+jobs:
+  build:
+    name: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+      - name: Build binary
+        run: make
+      - name: Print version
+        run: |
+          ./bin/macos-battery-exporter -v
+
+  release-please:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    outputs:
+      release_created: ${{ steps.release-please.outputs.release_created }}
+      version: ${{ steps.release-please.outputs.version }}
+    steps:
+      - uses: jimeh/release-please-manifest-action@v1
+        id: release-please
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build, release-please]
+    if: needs.release-please.outputs.release_created
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BREW_TAP_TOKEN: ${{ secrets.BREW_TAP_TOKEN }}
