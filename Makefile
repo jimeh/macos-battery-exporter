@@ -1,6 +1,6 @@
 NAME = macos-battery-exporter
 BINARY = bin/${NAME}
-VERSION ?= $(shell cat VERSION)
+VERSION ?= $(shell git describe --tags --exact 2>/dev/null || echo "0.0.0-dev")
 SOURCES = $(shell find . -name '*.go' -o -name 'Makefile')
 
 $(BINARY): $(SOURCES)
