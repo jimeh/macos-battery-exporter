@@ -39,7 +39,7 @@ brews:
     license: "MIT"
     skip_upload: auto
     service: |
-      run [bin/"macos-battery-exporter"]
+      run [bin/"macos-battery-exporter", "-s"]
     test: |
       system "#{bin}/macos-battery-exporter -v"
     repository:
