@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/jimeh/macos-battery-exporter/releases"><img src="https://img.shields.io/github/v/tag/jimeh/macos-battery-exporter?label=release" alt="GitHub tag (latest SemVer)"></a>
+  <a href="https://pkg.go.dev/github.com/jimeh/macos-battery-exporter"><img src="https://img.shields.io/badge/%E2%80%8B-reference-387b97.svg?logo=go&logoColor=white" alt="Go Reference"></a>
   <a href="https://github.com/jimeh/macos-battery-exporter/issues"><img src="https://img.shields.io/github/issues-raw/jimeh/macos-battery-exporter.svg?style=flat&logo=github&logoColor=white" alt="GitHub issues"></a>
   <a href="https://github.com/jimeh/macos-battery-exporter/pulls"><img src="https://img.shields.io/github/issues-pr-raw/jimeh/macos-battery-exporter.svg?style=flat&logo=github&logoColor=white" alt="GitHub pull requests"></a>
   <a href="https://github.com/jimeh/macos-battery-exporter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/jimeh/macos-battery-exporter.svg?style=flat" alt="License Status"></a>
