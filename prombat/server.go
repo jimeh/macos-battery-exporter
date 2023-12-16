@@ -1,6 +1,6 @@
 //go:build darwin
 
-package prom
+package prombat
 
 import (
 	"fmt"
@@ -14,23 +14,17 @@ import (
 
 const DefaultNamespace = "macos"
 
-type Registry interface {
-	prometheus.Registerer
-	prometheus.Gatherer
-}
-
 type ServerOptions struct {
 	Bind         string
 	Port         int
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 	IdleTimeout  time.Duration
-	Logger       *slog.Logger
 }
 
 type Server struct {
 	*http.Server
-	registry Registry
+	registry *prometheus.Registry
 	mux      *http.ServeMux
 }
 

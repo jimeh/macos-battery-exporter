@@ -1,6 +1,6 @@
 //go:build darwin
 
-package prom
+package prombat
 
 import (
 	"log/slog"

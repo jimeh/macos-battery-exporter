@@ -16,6 +16,7 @@ jobs:
       - name: Print version
         run: |
           ./bin/macos-battery-exporter -v
+          ./bin/macos-battery-exporter
 
   lint:
     name: Lint

@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/jimeh/macos-battery-exporter/prom"
+	"github.com/jimeh/macos-battery-exporter/prombat"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/expfmt"
 )
@@ -28,7 +28,7 @@ var (
 	)
 	portFlag      = flag.Int("p", 9108, "Port to run server on")
 	namespaceFlag = flag.String(
-		"n", prom.DefaultNamespace, "Namespace for metrics",
+		"n", prombat.DefaultNamespace, "Namespace for metrics",
 	)
 	logLevelFlag = flag.String("l", "info", "Log level")
 	versionFlag  = flag.Bool("v", false, "Print version and exit")
@@ -54,12 +54,12 @@ func mainE() error {
 	}
 
 	if *serverFlag {
-		opts := prom.ServerOptions{
+		opts := prombat.ServerOptions{
 			Bind: *bindFlag,
 			Port: *portFlag,
 		}
 
-		return prom.RunServer(
+		return prombat.RunServer(
 			*namespaceFlag,
 			prometheus.DefaultRegisterer.(*prometheus.Registry),
 			opts,
@@ -67,7 +67,7 @@ func mainE() error {
 	}
 
 	registry := prometheus.NewRegistry()
-	err = registry.Register(prom.NewCollector(*namespaceFlag))
+	err = registry.Register(prombat.NewCollector(*namespaceFlag))
 	if err != nil {
 		return err
 	}
