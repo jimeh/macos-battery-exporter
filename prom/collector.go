@@ -4,6 +4,7 @@ package prom
 
 import (
 	"log/slog"
+	"math"
 
 	"github.com/jimeh/macos-battery-exporter/battery"
 	"github.com/prometheus/client_golang/prometheus"
@@ -237,25 +238,25 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(
 			c.descChargeRateAmps,
 			prometheus.GaugeValue,
-			float64(battery.ChargeRateAmps)/1000,
+			roundTo(float64(battery.ChargeRateAmps)/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
 			c.descChargeRateWatts,
 			prometheus.GaugeValue,
-			battery.ChargeRateWatts/1000,
+			roundTo(battery.ChargeRateWatts/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
 			c.descCurrentCapacityAmps,
 			prometheus.GaugeValue,
-			float64(battery.CurrentCapacityAmps)/1000,
+			roundTo(float64(battery.CurrentCapacityAmps)/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
 			c.descCurrentCapacityWatts,
 			prometheus.GaugeValue,
-			battery.CurrentCapacityWatts/1000,
+			roundTo(battery.CurrentCapacityWatts/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
@@ -273,13 +274,13 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(
 			c.descDesignCapacityAmps,
 			prometheus.GaugeValue,
-			float64(battery.DesignCapacityAmps)/1000,
+			roundTo(float64(battery.DesignCapacityAmps)/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
 			c.descDesignCapacityWatts,
 			prometheus.GaugeValue,
-			battery.DesignCapacityWatts/1000,
+			roundTo(battery.DesignCapacityWatts/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
@@ -303,13 +304,13 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(
 			c.descMaxCapacityAmps,
 			prometheus.GaugeValue,
-			float64(battery.MaxCapacityAmps)/1000,
+			roundTo(float64(battery.MaxCapacityAmps)/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
 			c.descMaxCapacityWatts,
 			prometheus.GaugeValue,
-			battery.MaxCapacityWatts/1000,
+			roundTo(battery.MaxCapacityWatts/1000, 6),
 			labels...,
 		)
 		ch <- prometheus.MustNewConstMetric(
@@ -327,7 +328,7 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(
 			c.descVoltage,
 			prometheus.GaugeValue,
-			float64(battery.Voltage)/1000,
+			roundTo(float64(battery.Voltage)/1000, 6),
 			labels...,
 		)
 	}
@@ -347,4 +348,10 @@ func boolToFloat64(b bool) float64 {
 	}
 
 	return 0
+}
+
+// roundTo rounds a float64 to 'places' decimal places
+func roundTo(value float64, places int) float64 {
+	shift := math.Pow(10, float64(places))
+	return math.Round(value*shift) / shift
 }

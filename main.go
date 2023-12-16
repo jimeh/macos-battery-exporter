@@ -16,6 +16,9 @@ import (
 )
 
 var (
+	version = "0.0.0-dev"
+	commit  = "unknown"
+
 	outputFlag = flag.String(
 		"o", "", "Output file to write to in Prometheus format",
 	)
@@ -24,8 +27,11 @@ var (
 		"b", "127.0.0.1", "Bind address to run server on",
 	)
 	portFlag      = flag.Int("p", 9108, "Port to run server on")
-	namespaceFlag = flag.String("n", "node", "Namespace for metrics")
-	logLevelFlag  = flag.String("l", "info", "Log level")
+	namespaceFlag = flag.String(
+		"n", prom.DefaultNamespace, "Namespace for metrics",
+	)
+	logLevelFlag = flag.String("l", "info", "Log level")
+	versionFlag  = flag.Bool("v", false, "Print version and exit")
 )
 
 func main() {
@@ -42,6 +48,11 @@ func mainE() error {
 		return err
 	}
 
+	if *versionFlag {
+		fmt.Printf("macos-battery-exporter %s (%s)\n", version, commit)
+		return nil
+	}
+
 	if *serverFlag {
 		opts := prom.ServerOptions{
 			Bind: *bindFlag,
@@ -53,32 +64,32 @@ func mainE() error {
 			prometheus.DefaultRegisterer.(*prometheus.Registry),
 			opts,
 		)
+	}
+
+	registry := prometheus.NewRegistry()
+	err = registry.Register(prom.NewCollector(*namespaceFlag))
+	if err != nil {
+		return err
+	}
+
+	gatherers := prometheus.Gatherers{registry}
+	metricFamilies, err := gatherers.Gather()
+	if err != nil {
+		return err
+	}
+
+	var sb strings.Builder
+	for _, mf := range metricFamilies {
+		_, err := expfmt.MetricFamilyToText(&sb, mf)
+		if err != nil {
+			return err
+		}
+	}
+
+	if *outputFlag != "" {
+		return writeToFile(sb.String(), *outputFlag)
 	} else {
-		registry := prometheus.NewRegistry()
-		err := registry.Register(prom.NewCollector(*namespaceFlag))
-		if err != nil {
-			return err
-		}
-
-		gatherers := prometheus.Gatherers{registry}
-		metricFamilies, err := gatherers.Gather()
-		if err != nil {
-			return err
-		}
-
-		var sb strings.Builder
-		for _, mf := range metricFamilies {
-			_, err := expfmt.MetricFamilyToText(&sb, mf)
-			if err != nil {
-				return err
-			}
-		}
-
-		if *outputFlag != "" {
-			return writeToFile(sb.String(), *outputFlag)
-		} else {
-			fmt.Print(sb.String())
-		}
+		fmt.Print(sb.String())
 	}
 
 	return nil

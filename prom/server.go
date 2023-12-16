@@ -12,6 +12,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+const DefaultNamespace = "macos"
+
 type Registry interface {
 	prometheus.Registerer
 	prometheus.Gatherer
@@ -96,7 +98,7 @@ func RunServer(
 	options ServerOptions,
 ) error {
 	if namespace == "" {
-		namespace = "node"
+		namespace = DefaultNamespace
 	}
 
 	s := NewServer(registry, options)
