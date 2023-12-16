@@ -34,7 +34,15 @@ type batteryRaw struct {
 }
 
 func getAllRaw() ([]*batteryRaw, error) {
-	b, err := exec.Command("ioreg", "-ra", "-c", "AppleSmartBattery").Output()
+	ioreg, err := exec.LookPath("ioreg")
+	if err != nil {
+		ioreg, err = exec.LookPath("/usr/sbin/ioreg")
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	b, err := exec.Command(ioreg, "-ra", "-c", "AppleSmartBattery").Output()
 	if err != nil {
 		return nil, err
 	}
