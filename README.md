@@ -19,6 +19,40 @@ A Prometheus exporter for macOS which exposes most useful details available from
 `ioreg`. Includes a lot more details than what `node_exporter` supports via it's
 `node_power_supply_*` metrics.
 
+## Installation
+
+### Manually
+
+Binary releases are available on the
+[Releases](https://github.com/jimeh/macos-battery-exporter/releases) page.
+
+### Homebrew
+
+You can install it from the
+[`jimeh/macos-battery-exporter`](https://github.com/jimeh/homebrew-macos-battery-exporter)
+Tap:
+
+```bash
+brew install jimeh/macos-battery-exporter/macos-battery-exporter
+```
+
+#### Service
+
+The homebrew formula has a service configuration, which can be started with:
+
+```bash
+brew services start macos-battery-exporter
+```
+
+After which battery metrics are available on
+[`http://localhost:9108/metrics`](http://localhost:9108/metrics).
+
+### Go
+
+```bash
+go install github.com/jimeh/macos-battery-exporter@latest
+```
+
 ## Usage
 
 ### Help
@@ -28,7 +62,7 @@ macos-battery-exporter -h
 ```
 
 ```
-Usage of bin/macos-battery-exporter:
+Usage of macos-battery-exporter:
   -b string
         Bind address to run server on (default "127.0.0.1")
   -l string
