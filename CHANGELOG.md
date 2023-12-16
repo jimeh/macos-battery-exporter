@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.2...v0.0.3) (2023-12-16)
+
+
+### Bug Fixes
+
+* **package:** resolve issue with running as a homebrew service ([9a168f9](https://github.com/jimeh/macos-battery-exporter/commit/9a168f9ff918f6539ca85d43202759197ed952b3))
+
 ## [0.0.2](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.1...v0.0.2) (2023-12-16)
 
 
