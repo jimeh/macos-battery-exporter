@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.4...v0.0.5) (2023-12-16)
+
+
+### Features
+
+* **go:** rename prom package to suitable prombat ([436e4a4](https://github.com/jimeh/macos-battery-exporter/commit/436e4a4b01d96654b7012f795f2d305ca4084681))
+
 ## [0.0.4](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.3...v0.0.4) (2023-12-16)
 
 
