@@ -15,12 +15,12 @@ type Battery struct {
 	// BuiltIn indicates if the battery is built-in or not.
 	BuiltIn bool
 
-	// ChargeRateAmps is the current charge rate in mAh. Negative values indicate
-	// discharge, positive values indicate charging.
+	// ChargeRateAmps is the current charge rate in mAh. Negative values
+	// indicate discharge, positive values indicate charging.
 	ChargeRateAmps int64
 
-	// ChargeRateWatts is the current charge rate in mWh. Negative values indicate
-	// discharge, positive values indicate charging.
+	// ChargeRateWatts is the current charge rate in mWh. Negative values
+	// indicate discharge, positive values indicate charging.
 	ChargeRateWatts float64
 
 	// CurrentCapacityAmps is the current battery capacity in mAh.
@@ -76,6 +76,7 @@ type Battery struct {
 func newBattery(b *batteryRaw) *Battery {
 	volts := float64(b.Voltage) / 1000
 
+	//nolint:lll
 	return &Battery{
 		BatteryCellDisconnectCount: b.BatteryCellDisconnectCount,
 		BuiltIn:                    b.BuiltIn,
@@ -101,29 +102,31 @@ func newBattery(b *batteryRaw) *Battery {
 }
 
 func Get() (*Battery, error) {
-	batteriesRaw, err := getAllRaw()
+	raw, err := getAllRaw()
 	if err != nil {
 		return nil, err
 	}
 
-	return newBattery(batteriesRaw[0]), nil
+	return newBattery(raw[0]), nil
 }
 
 func GetAll() ([]*Battery, error) {
-	batteriesRaw, err := getAllRaw()
+	raw, err := getAllRaw()
 	if err != nil {
 		return nil, err
 	}
 
 	batteries := []*Battery{}
-	for _, b := range batteriesRaw {
+	for _, b := range raw {
 		batteries = append(batteries, newBattery(b))
 	}
 
 	return batteries, nil
 }
 
-// roundTo rounds a float64 to 'places' decimal places
+// roundTo rounds a float64 to 'places' decimal places.
+//
+//nolint:unparam
 func roundTo(value float64, places int) float64 {
 	shift := math.Pow(10, float64(places))
 	return math.Round(value*shift) / shift

@@ -88,9 +88,9 @@ func mainE() error {
 
 	if *outputFlag != "" {
 		return writeToFile(sb.String(), *outputFlag)
-	} else {
-		fmt.Print(sb.String())
 	}
+
+	fmt.Print(sb.String())
 
 	return nil
 }

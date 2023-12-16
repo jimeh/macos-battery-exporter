@@ -367,7 +367,9 @@ func boolToFloat64(b bool) float64 {
 	return 0
 }
 
-// roundTo rounds a float64 to 'places' decimal places
+// roundTo rounds a float64 to 'places' decimal places.
+//
+//nolint:unparam
 func roundTo(value float64, places int) float64 {
 	shift := math.Pow(10, float64(places))
 	return math.Round(value*shift) / shift
