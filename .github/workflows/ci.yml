@@ -31,6 +31,7 @@ jobs:
           version: v1.55
         env:
           VERBOSE: "true"
+          GOOS: "darwin"
 
   release-please:
     runs-on: ubuntu-latest
