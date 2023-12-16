@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.1...v0.0.2) (2023-12-16)
+
+
+### Bug Fixes
+
+* **battery:** find ioreg executable more reliably ([993b036](https://github.com/jimeh/macos-battery-exporter/commit/993b036d99362b6bebd36545fc34d325863421d5))
+
 ## 0.0.1 (2023-12-16)
 
 
