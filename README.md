@@ -50,6 +50,7 @@ macos-battery-exporter
 ```
 
 ```ini
+# HELP macos_battery_cell_disconnect_count Total number of times a battery cell has been disconnected.
 # TYPE macos_battery_cell_disconnect_count gauge
 macos_battery_cell_disconnect_count{serial="ZTMDHJEZ8JKMYVAJKU"} 0
 # HELP macos_battery_charge_rate_amps Current charge rate in Ah.
