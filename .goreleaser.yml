@@ -1,0 +1,49 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - env:
+      - CGO_ENABLED=0
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - "-s -w -X main.version={{ .Version }} -X main.commit={{ .Commit }}"
+    goos:
+      - "darwin"
+    goarch:
+      - "amd64"
+      - "arm64"
+
+universal_binaries:
+  - replace: true
+
+archives:
+  - format: tar.gz
+    name_template: |-
+      {{ .ProjectName }}-{{ .Version }}_{{ .Os }}_{{ if eq .Arch "all" }}universal{{ else }}{{ .Arch }}{{ end }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}
+    wrap_in_directory: true
+
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  skip: true
+
+brews:
+  - name: macos-battery-exporter
+    homepage: "https://github.com/jimeh/macos-battery-exporter"
+    description: "Prometheus exporter for detailed battery metrics on macOS."
+    license: "MIT"
+    skip_upload: auto
+    service: |
+      run [bin/"macos-battery-exporter"]
+    test: |
+      system "#{bin}/macos-battery-exporter -v"
+    repository:
+      owner: jimeh
+      name: homebrew-macos-battery-exporter
+      branch: main
+      token: "{{ .Env.BREW_TAP_TOKEN }}"
