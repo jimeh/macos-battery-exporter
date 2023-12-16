@@ -89,19 +89,22 @@ macos-battery-exporter
 macos_battery_cell_disconnect_count{serial="ZTMDHJEZ8JKMYVAJKU"} 0
 # HELP macos_battery_charge_rate_amps Current charge rate in Ah.
 # TYPE macos_battery_charge_rate_amps gauge
-macos_battery_charge_rate_amps{serial="ZTMDHJEZ8JKMYVAJKU"} -0.927
+macos_battery_charge_rate_amps{serial="ZTMDHJEZ8JKMYVAJKU"} -1.004
 # HELP macos_battery_charge_rate_watts Current charge rate in Wh.
 # TYPE macos_battery_charge_rate_watts gauge
-macos_battery_charge_rate_watts{serial="ZTMDHJEZ8JKMYVAJKU"} -10.297116
+macos_battery_charge_rate_watts{serial="ZTMDHJEZ8JKMYVAJKU"} -12.712648
+# HELP macos_battery_count Total number of batteries.
+# TYPE macos_battery_count gauge
+macos_battery_count 1
 # HELP macos_battery_current_capacity_amps Current charge capacity in Ah.
 # TYPE macos_battery_current_capacity_amps gauge
-macos_battery_current_capacity_amps{serial="ZTMDHJEZ8JKMYVAJKU"} 1.127
+macos_battery_current_capacity_amps{serial="ZTMDHJEZ8JKMYVAJKU"} 5.39
 # HELP macos_battery_current_capacity_watts Current charge capacity in Wh.
 # TYPE macos_battery_current_capacity_watts gauge
-macos_battery_current_capacity_watts{serial="ZTMDHJEZ8JKMYVAJKU"} 12.518716
+macos_battery_current_capacity_watts{serial="ZTMDHJEZ8JKMYVAJKU"} 68.24818
 # HELP macos_battery_current_percentage Current battery charge percentage.
 # TYPE macos_battery_current_percentage gauge
-macos_battery_current_percentage{serial="ZTMDHJEZ8JKMYVAJKU"} 18
+macos_battery_current_percentage{serial="ZTMDHJEZ8JKMYVAJKU"} 91
 # HELP macos_battery_cycle_count Current battery cycle count.
 # TYPE macos_battery_cycle_count counter
 macos_battery_cycle_count{serial="ZTMDHJEZ8JKMYVAJKU"} 15
@@ -110,7 +113,7 @@ macos_battery_cycle_count{serial="ZTMDHJEZ8JKMYVAJKU"} 15
 macos_battery_design_capacity_amps{serial="ZTMDHJEZ8JKMYVAJKU"} 6.249
 # HELP macos_battery_design_capacity_watts Design capacity in Wh.
 # TYPE macos_battery_design_capacity_watts gauge
-macos_battery_design_capacity_watts{serial="ZTMDHJEZ8JKMYVAJKU"} 69.413892
+macos_battery_design_capacity_watts{serial="ZTMDHJEZ8JKMYVAJKU"} 79.124838
 # HELP macos_battery_fully_charged Indicates if the battery is fully charged.
 # TYPE macos_battery_fully_charged gauge
 macos_battery_fully_charged{serial="ZTMDHJEZ8JKMYVAJKU"} 0
@@ -125,19 +128,19 @@ macos_battery_info{built_in="true",device_name="ayzo3hgs",serial="ZTMDHJEZ8JKMYV
 macos_battery_is_charging{serial="ZTMDHJEZ8JKMYVAJKU"} 0
 # HELP macos_battery_max_capacity_amps Design capacity in Ah.
 # TYPE macos_battery_max_capacity_amps gauge
-macos_battery_max_capacity_amps{serial="ZTMDHJEZ8JKMYVAJKU"} 6.262
+macos_battery_max_capacity_amps{serial="ZTMDHJEZ8JKMYVAJKU"} 6.271
 # HELP macos_battery_max_capacity_watts Design capacity in Wh.
 # TYPE macos_battery_max_capacity_watts gauge
-macos_battery_max_capacity_watts{serial="ZTMDHJEZ8JKMYVAJKU"} 69.558296
+macos_battery_max_capacity_watts{serial="ZTMDHJEZ8JKMYVAJKU"} 79.403402
 # HELP macos_battery_temperature_celsius Current battery temperature in °C.
 # TYPE macos_battery_temperature_celsius gauge
-macos_battery_temperature_celsius{serial="ZTMDHJEZ8JKMYVAJKU"} 30.47
+macos_battery_temperature_celsius{serial="ZTMDHJEZ8JKMYVAJKU"} 30.53
 # HELP macos_battery_time_remaining_seconds Estimated time remaining until battery is fully charged or discharged.
 # TYPE macos_battery_time_remaining_seconds gauge
-macos_battery_time_remaining_seconds{serial="ZTMDHJEZ8JKMYVAJKU"} 3540
+macos_battery_time_remaining_seconds{serial="ZTMDHJEZ8JKMYVAJKU"} 14040
 # HELP macos_battery_voltage_volts Current battery voltage in V.
 # TYPE macos_battery_voltage_volts gauge
-macos_battery_voltage_volts{serial="ZTMDHJEZ8JKMYVAJKU"} 11.108
+macos_battery_voltage_volts{serial="ZTMDHJEZ8JKMYVAJKU"} 12.662
 ```
 
 ### Write to File
