@@ -16,9 +16,9 @@
   <a href="https://github.com/jimeh/macos-battery-exporter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/jimeh/macos-battery-exporter.svg?style=flat" alt="License Status"></a>
 </p>
 
-A Prometheus exporter for macOS which exposes most useful details available from
-`ioreg`. Includes a lot more details than what `node_exporter` supports via it's
-`node_power_supply_*` metrics.
+A Prometheus exporter for macOS battery information, exposing wide range of
+details available from `ioreg` about batteries. Includes a lot more details than
+what `node_exporter` supports via its `node_power_supply_*` metrics.
 
 ## Installation
 
@@ -29,12 +29,11 @@ Binary releases are available on the
 
 ### Homebrew
 
-You can install it from the
-[`jimeh/macos-battery-exporter`](https://github.com/jimeh/homebrew-macos-battery-exporter)
+You can install it from the [`jimeh/tap`](https://github.com/jimeh/homebrew-tap)
 Tap:
 
 ```bash
-brew install jimeh/macos-battery-exporter/macos-battery-exporter
+brew install jimeh/tap/macos-battery-exporter
 ```
 
 #### Service
@@ -159,3 +158,7 @@ macos-battery-exporter -s
 ```bash
 curl http://localhost:9108/metrics
 ```
+
+## License
+
+[MIT](https://github.com/jimeh/macos-battery-exporter/blob/main/LICENSE)
