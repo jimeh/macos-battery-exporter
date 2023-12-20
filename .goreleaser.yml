@@ -44,6 +44,6 @@ brews:
       system "#{bin}/macos-battery-exporter -v"
     repository:
       owner: jimeh
-      name: homebrew-macos-battery-exporter
+      name: homebrew-tap
       branch: main
       token: "{{ .Env.BREW_TAP_TOKEN }}"
