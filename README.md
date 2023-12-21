@@ -62,19 +62,22 @@ macos-battery-exporter -h
 ```
 
 ```
-Usage of macos-battery-exporter:
+usage: macos-battery-exporter [<options>]
+
   -b string
-        Bind address to run server on (default "127.0.0.1")
+    	Bind address to run server on (default "127.0.0.1")
+  -d string
+    	Log output device (stderr or stdout) (default "stderr")
   -l string
-        Log level (default "info")
+    	Log level (default "info")
   -n string
-        Namespace for metrics (default "macos")
+    	Namespace for metrics (default "macos")
   -o string
-        Output file to write to in Prometheus format
+    	Output file to write to in Prometheus format
   -p int
-        Port to run server on (default 9108)
-  -s    Run as a Prometheus metrics server
-  -v    Print version and exit
+    	Port to run server on (default 9108)
+  -s	Run as a Prometheus metrics server
+  -v	Print version and exit
 ```
 
 ### Print to STDOUT
