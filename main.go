@@ -5,7 +5,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
+	"io"
 	"log/slog"
 	"os"
 	"strings"
@@ -16,93 +16,159 @@ import (
 )
 
 var (
+	name    = "macos-battery-exporter"
 	version = "0.0.0-dev"
 	commit  = "unknown"
+)
 
-	outputFlag = flag.String(
+type configuration struct {
+	Output       string
+	Server       bool
+	Bind         string
+	Port         int
+	Namespace    string
+	LogLevel     string
+	LogDevice    string
+	PrintVersion bool
+}
+
+func configure() (*configuration, *flag.FlagSet, error) {
+	fs := flag.NewFlagSet(name, flag.ExitOnError)
+	fs.Usage = func() {
+		fmt.Fprintf(fs.Output(),
+			"usage: %s [<options>]\n\n", fs.Name(),
+		)
+		fs.PrintDefaults()
+	}
+
+	config := &configuration{}
+
+	fs.StringVar(&config.Output,
 		"o", "", "Output file to write to in Prometheus format",
 	)
-	serverFlag = flag.Bool("s", false, "Run as a Prometheus metrics server")
-	bindFlag   = flag.String(
+	fs.BoolVar(&config.Server,
+		"s", false, "Run as a Prometheus metrics server",
+	)
+	fs.StringVar(&config.Bind,
 		"b", "127.0.0.1", "Bind address to run server on",
 	)
-	portFlag      = flag.Int("p", 9108, "Port to run server on")
-	namespaceFlag = flag.String(
+	fs.IntVar(&config.Port, "p", 9108, "Port to run server on")
+	fs.StringVar(&config.Namespace,
 		"n", prombat.DefaultNamespace, "Namespace for metrics",
 	)
-	logLevelFlag = flag.String("l", "info", "Log level")
-	versionFlag  = flag.Bool("v", false, "Print version and exit")
-)
+	fs.StringVar(&config.LogLevel,
+		"l", "info", "Log level",
+	)
+	fs.StringVar(&config.LogDevice,
+		"d", "stderr", "Log output device (stderr or stdout)",
+	)
+	fs.BoolVar(&config.PrintVersion,
+		"v", false, "Print version and exit",
+	)
+
+	err := fs.Parse(os.Args[1:])
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return config, fs, nil
+}
 
 func main() {
 	if err := mainE(); err != nil {
-		log.Fatal(err)
+		slog.Error(err.Error())
+		os.Exit(1)
 	}
 }
 
 func mainE() error {
-	flag.Parse()
-
-	err := setupSLog(*logLevelFlag)
+	config, _, err := configure()
 	if err != nil {
 		return err
 	}
 
-	if *versionFlag {
-		fmt.Printf("macos-battery-exporter %s (%s)\n", version, commit)
+	err = setupSLog(config.LogDevice, config.LogLevel)
+	if err != nil {
+		return err
+	}
+
+	if config.PrintVersion {
+		fmt.Printf("%s %s (%s)\n", name, version, commit)
 		return nil
 	}
 
-	if *serverFlag {
-		opts := prombat.ServerOptions{
-			Bind: *bindFlag,
-			Port: *portFlag,
-		}
-
-		return prombat.RunServer(
-			*namespaceFlag,
-			prometheus.DefaultRegisterer.(*prometheus.Registry),
-			opts,
-		)
+	if config.Server {
+		return runServer(config)
 	}
 
-	registry := prometheus.NewRegistry()
-	err = registry.Register(prombat.NewCollector(*namespaceFlag))
+	metrics, err := renderMetrics(config)
 	if err != nil {
 		return err
+	}
+
+	if config.Output != "" {
+		return writeToFile(metrics, config.Output)
+	}
+
+	fmt.Print(metrics)
+	return nil
+}
+
+func runServer(config *configuration) error {
+	opts := prombat.ServerOptions{
+		Bind: config.Bind,
+		Port: config.Port,
+	}
+
+	return prombat.RunServer(
+		config.Namespace,
+		prometheus.DefaultRegisterer.(*prometheus.Registry),
+		opts,
+	)
+}
+
+func renderMetrics(config *configuration) (string, error) {
+	registry := prometheus.NewRegistry()
+	err := registry.Register(prombat.NewCollector(config.Namespace))
+	if err != nil {
+		return "", err
 	}
 
 	gatherers := prometheus.Gatherers{registry}
 	metricFamilies, err := gatherers.Gather()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	var sb strings.Builder
 	for _, mf := range metricFamilies {
 		_, err := expfmt.MetricFamilyToText(&sb, mf)
 		if err != nil {
-			return err
+			return "", err
 		}
 	}
 
-	if *outputFlag != "" {
-		return writeToFile(sb.String(), *outputFlag)
-	}
-
-	fmt.Print(sb.String())
-
-	return nil
+	return sb.String(), nil
 }
 
-func setupSLog(levelStr string) error {
+func setupSLog(device string, levelStr string) error {
+	var w io.Writer
+	switch device {
+	case "stderr":
+		w = os.Stderr
+	case "stdout":
+		w = os.Stdout
+	default:
+		return fmt.Errorf("invalid log device: %s", device)
+	}
+
 	var level slog.Level
 	err := level.UnmarshalText([]byte(levelStr))
 	if err != nil {
 		return err
 	}
 
-	handler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+	handler := slog.NewTextHandler(w, &slog.HandlerOptions{
 		Level: level,
 	})
 	logger := slog.New(handler)
