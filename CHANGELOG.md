@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.5...v0.0.6) (2023-12-21)
+
+
+### Bug Fixes
+
+* **output:** write log output to stderr by default instead of stdout ([7b2e98e](https://github.com/jimeh/macos-battery-exporter/commit/7b2e98e150f9ee6d630023879395df0912047667))
+
 ## [0.0.5](https://github.com/jimeh/macos-battery-exporter/compare/v0.0.4...v0.0.5) (2023-12-16)
 
 
